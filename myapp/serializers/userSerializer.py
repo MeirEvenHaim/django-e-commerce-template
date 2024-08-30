@@ -9,22 +9,17 @@ from myapp.Models import Client
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('username', 'email', 'password')
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
-
+        model = Client
+        fields = ['email', 'username', 'password']
+    
+    def validate_username(self, value):
+        if Client.objects.filter(username=value).exists():
+            raise serializers.ValidationError("Username already exists.")
+        return value
+    
     def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password']
-        )
-        # Assuming you want to create a Client instance with the user
-        Client.objects.create(user=user)  # Create associated Client instance
-        return user
-
+        # Create and return a new `Client` instance, using the validated data.
+        return Client.objects.create_user(**validated_data)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
