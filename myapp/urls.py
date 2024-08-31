@@ -3,29 +3,36 @@ from myapp.views.cart_itemViews import cart_item_detail, cart_item_list
 from myapp.views.categoryViews import category_detail, category_list
 from myapp.views.payment import payment_detail, payment_list
 from myapp.views.productViews import product_detail, product_list
-from myapp.views.registerViews import RegisterView
+from myapp.views.registerViews import register
 from myapp.views.shipping import shipping_detail, shipping_list
 from myapp.views.supplierViews import supplier_detail, supplier_list
 from myapp.views.userView import UserViewSet
 from myapp.views.loginView import CustomTokenObtainPairView
-from myapp.views.orders import order_detail ,order_list
-from myapp.views.cartViews import cart_detail , cart_list
+from myapp.views.orders import order_detail, order_list
+from myapp.views.cartViews import cart_detail, cart_list
+
+# User view set
 user_list = UserViewSet.as_view({
     'get': 'list',    # Admins can list all users
-    'post': 'update', # Update user
-    'delete': 'destroy' # Delete user
+    'post': 'update', # Update user (if needed)
+    'delete': 'destroy' # Admins can delete users
 })
 
 user_detail = UserViewSet.as_view({
-    'get': 'retrieve'  # Users can view/update their own profile
+    'get': 'retrieve',  # Users can view their own profile
+    'put': 'update',    # Users can update their own profile
 })
 
 urlpatterns = [
-    path('register/', RegisterView.as_view(), name='register'),
+    # Authentication and registration URLs
+    path('register/', register, name='register'),
+    path('login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+
+    # User management URLs
     path('users/', user_list, name='user-list'),  # Admins can list all users
     path('users/<int:pk>/', user_detail, name='user-detail'),  # Users can view/update their own profile
-    path('login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),  # Custom token view
-      # Category URLs
+
+    # Category URLs
     path('categories/', category_list, name='category-list'),
     path('categories/<int:pk>/', category_detail, name='category-detail'),
     
@@ -57,4 +64,3 @@ urlpatterns = [
     path('shippings/', shipping_list, name='shipping-list'),
     path('shippings/<int:pk>/', shipping_detail, name='shipping-detail'),
 ]
-

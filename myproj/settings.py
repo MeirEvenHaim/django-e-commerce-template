@@ -1,18 +1,17 @@
 import os
-from pathlib import Path
 from datetime import timedelta
 
-# Base Directory
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Base directory of the project
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Secret Key (use a secure key in production)
-SECRET_KEY = 'your-secret-key'
+SECRET_KEY = 'your-secret-key'  # Replace with a secure key
 
 # Debug Mode
 DEBUG = True  # Set to False in production
 
 # Allowed Hosts
-ALLOWED_HOSTS = ['*']  # Add your domain names or IP addresses
+ALLOWED_HOSTS = ['*']  # Replace with your domain names or IP addresses
 
 # Installed Apps
 INSTALLED_APPS = [
@@ -25,7 +24,7 @@ INSTALLED_APPS = [
     'rest_framework',  # Django REST Framework
     'corsheaders',  # Django CORS Headers
     'paypal',  # Django PayPal
-    'myapp',  # Replace with your app name
+    'myapp',
     # Add other apps here
 ]
 
@@ -44,11 +43,36 @@ MIDDLEWARE = [
 # URL Configuration
 ROOT_URLCONF = 'myproj.urls'  # Replace with your project name
 
-# Templates
+# WSGI Application
+WSGI_APPLICATION = 'myproj.wsgi.application'  # Replace with your project name
+
+# ASGI Application
+ASGI_APPLICATION = 'myproj.asgi.application'  # Replace with your project name
+
+# Database Configuration
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    }
+}
+
+# Static Files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media Files (Uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Templates Configuration
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -60,22 +84,6 @@ TEMPLATES = [
         },
     },
 ]
-
-# WSGI Application
-WSGI_APPLICATION = 'myproj.wsgi.application'  # Replace with your project name
-
-# ASGI Application
-ASGI_APPLICATION = 'myproj.asgi.application'  # Replace with your project name
-
-
-# Database Configuration
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -105,7 +113,7 @@ REST_FRAMEWORK = {
 
 # JWT Settings (for `djangorestframework-simplejwt`)
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=90),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -117,23 +125,14 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
-
 # CORS Headers Configuration
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Static Files
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
-# Media Files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # Pillow handles media files, make sure this path is correctly set
-
-# Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email Configuration (Use SMTP in production)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Replace with actual email backend in production
 
 # PayPal Configuration
-PAYPAL_RECEIVER_EMAIL = 'your-paypal-email@example.com'
+PAYPAL_RECEIVER_EMAIL = 'your-paypal-email@example.com'  # Replace with actual PayPal email
 PAYPAL_TEST = True  # Set to False in production
 
 # Language and Time Zone
