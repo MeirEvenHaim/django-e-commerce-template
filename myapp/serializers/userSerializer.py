@@ -12,20 +12,22 @@ class UserSerializer(serializers.ModelSerializer):
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     email = serializers.EmailField()
+    is_staff = serializers.BooleanField(default=False)  # Add is_staff field
+    is_superuser = serializers.BooleanField(default=False)  # Add is_superuser field
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password', 'is_staff', 'is_superuser']
 
     def create(self, validated_data):
-        user = User(
-            username=validated_data['username'],
-            email=validated_data['email']
-        )
-        user.set_password(validated_data['password'])
+        # Extract the password from validated_data
+        password = validated_data.pop('password')
+        
+        # Create the user with the provided data
+        user = User(**validated_data)
+        user.set_password(password)
         user.save()
         return user
-
 # Serializer for the Client model
 class ClientSerializer(serializers.ModelSerializer):
     user = UserCreateSerializer()

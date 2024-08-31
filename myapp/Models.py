@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
+
+
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client_profile', null=False)
     additional_info = models.TextField(blank=True, null=True)  # Example field for client-specific data

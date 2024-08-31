@@ -1,6 +1,6 @@
 from django.urls import path
 from myapp.views.cart_itemViews import cart_item_detail, cart_item_list
-from myapp.views.categoryViews import category_detail, category_list
+from myapp.views.categoryViews import category_detail, category_list_create
 from myapp.views.payment import payment_detail, payment_list
 from myapp.views.productViews import product_detail, product_list
 from myapp.views.registerViews import register
@@ -33,7 +33,7 @@ urlpatterns = [
     path('users/<int:pk>/', user_detail, name='user-detail'),  # Users can view/update their own profile
 
     # Category URLs
-    path('categories/', category_list, name='category-list'),
+    path('categories/', category_list_create, name='category-list'),
     path('categories/<int:pk>/', category_detail, name='category-detail'),
     
     # Supplier URLs
