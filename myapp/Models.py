@@ -2,14 +2,23 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
-
-
 class Client(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client_profile', null=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client_profile')
     additional_info = models.TextField(blank=True, null=True)  # Example field for client-specific data
+
+    class Meta:
+        verbose_name = 'Client'
+        verbose_name_plural = 'Clients'
+        ordering = ['user__username']  # Order clients by username
 
     def __str__(self):
         return self.user.username
+
+    def has_additional_info(self):
+        """
+        Return True if additional_info is not empty.
+        """
+        return bool(self.additional_info)
 # Category Model
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)

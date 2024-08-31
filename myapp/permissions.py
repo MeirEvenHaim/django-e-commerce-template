@@ -15,32 +15,26 @@ class IsAdminOrSelf(BasePermission):
         return obj == request.user
     
 
-
 class IsAdminOrOwner(BasePermission):
     """
-    Custom permission to only allow admins to access all objects,
-    while regular users can only access their own carts and cart items.
+    Custom permission to allow only admins to perform any action,
+    and regular users to retrieve or update their own profile.
     """
+    
     def has_object_permission(self, request, view, obj):
-        # Admins have access to everything
+        # Admins can perform any action
         if request.user.is_staff:
             return True
         
-        # Regular users can only access their own carts and cart items
-        if isinstance(obj, Cart):
-            return obj.user == request.user
-        
-        if isinstance(obj, CartItem):
-            return obj.cart.user == request.user
-        
-        return False
+        # Regular users can only view/update their own profile
+        return obj == request.user
 
     def has_permission(self, request, view):
         # Admins can access any view
         if request.user.is_staff:
             return True
-        
-        # Regular users should be authenticated to access their carts
+
+        # Regular users can only access their own profile or public data
         if request.method in ['GET']:
             return request.user.is_authenticated
         
