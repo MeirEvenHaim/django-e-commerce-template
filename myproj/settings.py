@@ -13,6 +13,8 @@ DEBUG = True  # Set to False in production
 # Allowed Hosts
 ALLOWED_HOSTS = ['*']  # Replace with your domain names or IP addresses
 
+PAYPAL_RECEIVER_EMAIL = 'your-paypal-business-email@example.com'
+PAYPAL_TEST = True  # Set to False in production for real transactions
 # Installed Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
