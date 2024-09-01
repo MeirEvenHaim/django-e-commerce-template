@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from myapp.Models import Cart, CartItem
-from myapp.Models import Product
+from myapp.Models import Cart, CartItem, Product
+
 class CartItemSerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source='product.name')
     cart_id = serializers.PrimaryKeyRelatedField(queryset=Cart.objects.all(), source='cart', write_only=True)
